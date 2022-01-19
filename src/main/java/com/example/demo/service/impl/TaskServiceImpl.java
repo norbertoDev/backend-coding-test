@@ -6,10 +6,10 @@ import com.example.demo.task.TaskEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -22,5 +22,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskEntity> listAll() {
         return taskRepository.findAll();
+    }
+
+    @Override
+    public TaskEntity findId(int id) {
+        return taskRepository.findById(id).get();
     }
 }
