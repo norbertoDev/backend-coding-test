@@ -1,16 +1,20 @@
 package com.example.demo.task;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class TaskEntity {
-
+@Table(name = "task")
+public class TaskEntity implements Serializable{
+    
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String description;
     private boolean completed;
+
+    @Enumerated(EnumType.ORDINAL)
     private TaskPriority priority;
 
     public int getId() {
