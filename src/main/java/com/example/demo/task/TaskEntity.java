@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "task")
@@ -22,6 +23,10 @@ public class TaskEntity implements Serializable{
 
     @Enumerated(EnumType.ORDINAL)
     private TaskPriority priority;
+
+
+    @OneToMany(mappedBy = "task")
+    private List<SubTaskEntity> subtasks;
 
     public int getId() {
         return id;
@@ -58,4 +63,9 @@ public class TaskEntity implements Serializable{
     public Calendar getCreationDate() {return creationDate;}
 
     public void setCreationDate(Calendar creationDate) {this.creationDate = creationDate;}
+
+    public List<SubTaskEntity> getSubtasks() {return subtasks;}
+
+    public void setSubtasks(List<SubTaskEntity> subtasks) { this.subtasks = subtasks;}
+
 }
