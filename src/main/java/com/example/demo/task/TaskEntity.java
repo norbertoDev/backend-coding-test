@@ -2,6 +2,8 @@ package com.example.demo.task;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 
 @Entity
 @Table(name = "task")
@@ -13,6 +15,10 @@ public class TaskEntity implements Serializable{
 
     private String description;
     private boolean completed;
+
+    @Column(name = "creationDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar creationDate;
 
     @Enumerated(EnumType.ORDINAL)
     private TaskPriority priority;
@@ -48,4 +54,8 @@ public class TaskEntity implements Serializable{
     public void setPriority(TaskPriority priority) {
         this.priority = priority;
     }
+
+    public Calendar getCreationDate() {return creationDate;}
+
+    public void setCreationDate(Calendar creationDate) {this.creationDate = creationDate;}
 }

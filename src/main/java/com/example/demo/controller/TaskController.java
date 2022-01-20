@@ -1,14 +1,13 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.task.CreateTaskDTO;
+import com.example.demo.dto.task.RestTaskDTO;
 import com.example.demo.dto.task.UpdateTaskDTO;
 import com.example.demo.service.TaskService;
 
-import com.example.demo.task.TaskEntity;
+import com.example.demo.task.TaskPriority;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +33,7 @@ public class TaskController {
      * @return
      */
     @GetMapping("/tasks")
-    public List<TaskEntity> list(){
+    public List<RestTaskDTO> list(){
         return service.listAll();
     }
 
@@ -44,26 +43,43 @@ public class TaskController {
      * @return
      */
     @GetMapping("/{id}")
-    public ResponseEntity<TaskEntity> findId(@PathVariable int id){
+    public ResponseEntity<RestTaskDTO> findId(@PathVariable int id){
         try{
-            TaskEntity entity = service.findId(id);
-            return new ResponseEntity<TaskEntity>(entity,HttpStatus.OK);
+            RestTaskDTO entity = service.findId(id);
+            return new ResponseEntity<RestTaskDTO>(entity,HttpStatus.OK);
         }catch (NoSuchElementException e){
-            return new ResponseEntity<TaskEntity>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<RestTaskDTO>(HttpStatus.NOT_FOUND);
         }
     }
 
+    /**
+     * method for order the Task list by the creation Date.
+     * @return
+     */
+    @GetMapping("/orderCreationDate")
+    public List<RestTaskDTO> orderCreationDate(){
+        return service.orderByCreation();
+    }
+
+    @GetMapping("/orderPriority")
+    public List<RestTaskDTO> orderPriority(){
+        return service.orderByPriority();
+    }
+
+    @GetMapping("/filterPriority/{priority}")
+    public List<RestTaskDTO> filterPriority(@PathVariable TaskPriority priority){
+        return service.filterByPriority(priority);
+    }
     /**
      * Method Post to add news task in DB
      * @param dto
      */
     @PostMapping(value = "/add")
-    public void add(@RequestBody CreateTaskDTO dto){
+    public void add(@RequestBody RestTaskDTO dto){
         /*
             Aqui generamos el la conver de DTO to Entity
          */
-        TaskEntity entity = modelMapper.map(dto, TaskEntity.class);
-        service.save(entity);
+        service.save(dto);
     }
 
     /**
@@ -72,29 +88,28 @@ public class TaskController {
      * @return
      */
     @PutMapping(value = "/update")
-    public ResponseEntity<TaskEntity> updateTask(@RequestBody UpdateTaskDTO dto){
+    public ResponseEntity<RestTaskDTO> updateTask(@RequestBody UpdateTaskDTO dto){
         try{
-            TaskEntity entity = service.findId(dto.getId());
+            RestTaskDTO entity = service.findId(dto.getId());
 
             entity.setDescription(dto.getDescription() != null ? dto.getDescription() : entity.getDescription());
             entity.setPriority(dto.getPriority() != null ? dto.getPriority() : entity.getPriority());
             entity.setCompleted(dto.isCompleted());
             service.save(entity);
 
-            return new ResponseEntity<TaskEntity>(entity,HttpStatus.OK);
+            return new ResponseEntity<RestTaskDTO>(entity,HttpStatus.OK);
         }catch (NoSuchElementException e){
-            return new ResponseEntity<TaskEntity>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<RestTaskDTO>(HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/Delete/{id}")
-    public ResponseEntity<TaskEntity> deletetask(@PathVariable(value="id") Integer id){
+    public ResponseEntity<RestTaskDTO> deletetask(@PathVariable(value="id") Integer id){
         try{
-            TaskEntity entity = service.findId(id);
-            service.delete(entity);
-            return new ResponseEntity<TaskEntity>(entity,HttpStatus.OK);
+            RestTaskDTO result = service.delete(id);
+            return new ResponseEntity<RestTaskDTO>(result,HttpStatus.OK);
         }catch (NoSuchElementException e){
-            return new ResponseEntity<TaskEntity>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<RestTaskDTO>(HttpStatus.NOT_FOUND);
         }
     }
 }

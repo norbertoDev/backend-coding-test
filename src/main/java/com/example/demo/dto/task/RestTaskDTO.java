@@ -1,14 +1,24 @@
 package com.example.demo.dto.task;
 
+
 import com.example.demo.task.TaskPriority;
 import lombok.Data;
 
+import java.util.Calendar;
+import java.util.Date;
+
 @Data
-public class UpdateTaskDTO {
+public class RestTaskDTO {
+
+
     private int id;
     private String description;
     private boolean completed;
     private TaskPriority priority;
+
+
+
+    private Calendar creationDate;
 
     public int getId() {
         return id;
@@ -41,4 +51,10 @@ public class UpdateTaskDTO {
     public void setPriority(TaskPriority priority) {
         this.priority = priority;
     }
+
+    public Calendar getCreationDate() {return creationDate;}
+
+    public void setCreationDate(Calendar creationDate) {this.creationDate = creationDate;}
+
+
 }
