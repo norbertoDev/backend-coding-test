@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+
 import com.example.demo.interfaces.TaskRepository;
 import com.example.demo.service.TaskService;
 import com.example.demo.task.TaskEntity;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -28,4 +28,10 @@ public class TaskServiceImpl implements TaskService {
     public TaskEntity findId(int id) {
         return taskRepository.findById(id).get();
     }
+
+    @Override
+    public void save(TaskEntity entity) {
+        taskRepository.save(entity);
+    }
+
 }
