@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class RestTaskDTO {
@@ -15,6 +16,7 @@ public class RestTaskDTO {
     private String description;
     private boolean completed;
     private TaskPriority priority;
+    private List<RestSubTaskDTO> subtasks;
 
 
 
@@ -55,6 +57,10 @@ public class RestTaskDTO {
     public Calendar getCreationDate() {return creationDate;}
 
     public void setCreationDate(Calendar creationDate) {this.creationDate = creationDate;}
+
+    public List<RestSubTaskDTO> getSubtasks() {return subtasks;}
+
+    public void setSubtasks(List<RestSubTaskDTO> subtasks) {this.subtasks = subtasks;}
 
 
 }

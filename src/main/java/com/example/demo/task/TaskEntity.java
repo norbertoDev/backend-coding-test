@@ -68,4 +68,6 @@ public class TaskEntity implements Serializable{
 
     public void setSubtasks(List<SubTaskEntity> subtasks) { this.subtasks = subtasks;}
 
+
+
 }
