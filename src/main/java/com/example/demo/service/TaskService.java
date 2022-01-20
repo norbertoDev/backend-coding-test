@@ -12,4 +12,5 @@ public interface TaskService {
     List<TaskEntity> listAll();
     TaskEntity findId(int id);
     void save(TaskEntity entity);
+    void delete(TaskEntity entity);
 }

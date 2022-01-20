@@ -34,4 +34,9 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.save(entity);
     }
 
+    @Override
+    public void delete(TaskEntity entity) {
+        taskRepository.delete(entity);
+    }
+
 }

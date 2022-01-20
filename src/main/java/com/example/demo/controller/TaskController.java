@@ -75,12 +75,23 @@ public class TaskController {
     public ResponseEntity<TaskEntity> updateTask(@RequestBody UpdateTaskDTO dto){
         try{
             TaskEntity entity = service.findId(dto.getId());
-            if(entity != null) {
-                entity.setDescription(dto.getDescription() != null ? dto.getDescription() : entity.getDescription());
-                entity.setPriority(dto.getPriority() != null ? dto.getPriority() : entity.getPriority());
-                entity.setCompleted(dto.isCompleted());
-                service.save(entity);
-            }
+
+            entity.setDescription(dto.getDescription() != null ? dto.getDescription() : entity.getDescription());
+            entity.setPriority(dto.getPriority() != null ? dto.getPriority() : entity.getPriority());
+            entity.setCompleted(dto.isCompleted());
+            service.save(entity);
+
+            return new ResponseEntity<TaskEntity>(entity,HttpStatus.OK);
+        }catch (NoSuchElementException e){
+            return new ResponseEntity<TaskEntity>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/Delete/{id}")
+    public ResponseEntity<TaskEntity> deletetask(@PathVariable(value="id") Integer id){
+        try{
+            TaskEntity entity = service.findId(id);
+            service.delete(entity);
             return new ResponseEntity<TaskEntity>(entity,HttpStatus.OK);
         }catch (NoSuchElementException e){
             return new ResponseEntity<TaskEntity>(HttpStatus.NOT_FOUND);
